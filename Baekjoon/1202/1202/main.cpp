@@ -1,5 +1,6 @@
 #include<iostream>
 #include<algorithm>
+#include<queue>
 
 using namespace std;
 
@@ -9,7 +10,7 @@ public:
 	int v;
 
 	bool operator<(const N &_n) {
-		return (float)this->v / (float)this->m > (float)_n.v / (float)_n.m;
+		return this->m < _n.m;
 	}
 };
 
@@ -24,13 +25,16 @@ int main(void) {
 	for (int _k(0); _k < k; _k++)
 		cin >> ks[_k];
 	sort(ns, ns + n);
-	sort(ks, ks + k, greater<int>());
-	int ck(0);
+	sort(ks, ks + k);
+	priority_queue<int> pns;
 	long long int s(0);
-	for (int _n(0); _n < n && ck < k; _n++)
-		if (ks[ck] + 1 > ns[_n].m) {
-			s += ns[_n].v;
-			ck++;
+	int pnsi(0);
+	for (int _k(0); _k < k; _k++) {
+		while (pnsi < n && ns[pnsi].m < ks[_k] + 1)
+			pns.push(ns[pnsi++].v);
+		if (!pns.empty()) {
+			s += pns.top(); pns.pop();
 		}
+	}
 	cout << s;
 }

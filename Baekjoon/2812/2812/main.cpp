@@ -1,5 +1,5 @@
 #include<iostream>
-#include<stack>
+#include<vector>
 
 using namespace std;
 
@@ -8,22 +8,15 @@ int main(void) {
 	cin >> n >> k;
 	string ns;
 	cin >> ns;
-	while (k) {
-		stack<int> s;
-		s.push(ns[0]);
-		ns = ns.substr(1);
-		while (!ns.empty() && k > 0) {
-			if (s.top() < ns[0]) {
-				s.pop();
-				k--;
-			}
-			s.push(ns[0]);
-			ns = ns.substr(1);
+	int ln(0);
+	int ck(k);
+	for (int _n(0); _n < n; _n++) {
+		while (ln && ck && ns[ln - 1] < ns[_n]) {
+			ln--;
+			ck--;
 		}
-		while (!s.empty()) {
-			ns = (char)s.top() + ns;
-			s.pop();
-		}
+		ns[ln++] = ns[_n];
 	}
-	cout << ns;
+	for (int _n(0); _n < n - k; _n++)
+		cout << ns[_n];
 }
