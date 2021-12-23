@@ -1,40 +1,50 @@
 #include<iostream>
 #include<queue>
 #include<string>
+#include<stack>
 
 using namespace std;
 
-int visit[100001]{};
+int visit[100001];
 
 int main(void) {
-	int n, k, t(0);
+	for (int _n(0); _n < 100001; _n++)
+		visit[_n] = -1;
+	int n, k, t(0), s, c;
 	cin >> n >> k;
-
-	queue<pair<int, string>> q;
-	q.push(pair<int, string>(n, to_string(n)));
+	queue<int> q;
+	visit[n] = -2;
+	q.push(n);
 	while (true) {
-		int s = q.size();
+		s = q.size();
 		for (int _q(0); _q < s; _q++) {
-			if (q.front().first == k) {
-				cout << t << '\n' << q.front().second;
+			c = q.front();
+			if (c == k) {
+				stack<int> rs;
+				cout << t << '\n';
+				rs.push(c);
+				while (visit[rs.top()] != -2)
+					rs.push(visit[rs.top()]);
+				while (!rs.empty()) {
+					cout << rs.top() << ' '; rs.pop();
+				}
 				return 0;
 			}
-			if (q.front().first < 0 ||
-				q.front().first > 100000 ||
-				visit[q.front().first]) {	
-				q.pop();
-				continue;
-			}
-			visit[q.front().first] = 1;
-			q.push(pair<int, string>(
-				q.front().first + 1, 
-				q.front().second + ' ' + to_string(q.front().first + 1)));
-			q.push(pair<int, string>(
-				q.front().first - 1, 
-				q.front().second + ' ' + to_string(q.front().first - 1)));
-			q.push(pair<int, string>(
-				q.front().first * 2,
-				q.front().second + ' ' + to_string(q.front().first * 2)));
+			if (c < 100000)
+				if (visit[c + 1] == -1) {
+					visit[c + 1] = c;
+					q.push(c + 1);
+				}
+			if (c > 0)
+				if (visit[c - 1] == -1) {
+					visit[c - 1] = c;
+					q.push(c - 1);
+				}
+			if (c * 2 < 100001)
+				if (visit[c * 2] == -1) {
+					visit[c * 2] = c;
+					q.push(c * 2);
+				}
 			q.pop();
 		}
 		t++;
