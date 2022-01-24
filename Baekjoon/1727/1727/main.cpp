@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int n, m, nmgs[1000][1000], ns[1000], ms[1000];
+int n, m, nmgs[1000][1000], ns[1000], ms[1000], cm;
 
 int main(void) {
 	cin >> n >> m;
@@ -19,13 +19,15 @@ int main(void) {
 	for(int _n(0); _n < n; _n++)
 		for(int _m(0); _m < m; _m++)
 			nmgs[_n][_m] = abs(ns[_n] - ms[_m]);
-	for(int _n(0); _n < n; _n++) {
-		for(int _m(1); _m < m; _m++) {
-			int min(1e9);
-			for(int i(0); i < _n; i++)
-				min = min > nmgs[i][_m - 1] ? nmgs[i][_m - 1] : min;
-			nmgs[_n][_m] += min;
+	for(int _m(1); _m < m; _m++) {
+		cm = 1e9;
+		for(int _n(_m); _n < n; _n++) {
+			nmgs[_n][_m] += min(nmgs[_n - 1][_m - 1], cm);
+			cm = min(nmgs[_n - 1][_m - 1], cm);
 		}
 	}
-	cout << nmgs[n - 1][m - 1];
+	cm = 1e9;
+	for(int _n(m - 1); _n < n; _n++)
+		cm = min(cm, nmgs[_n][m - 1]);
+	cout << cm;
 }
