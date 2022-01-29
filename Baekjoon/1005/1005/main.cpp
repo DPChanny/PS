@@ -7,19 +7,21 @@ using namespace std;
 uint16_t n, w, bf, bt;
 vector<uint16_t> ks[1000];
 uint32_t t, k, ns[1000];
-uint64_t vs[1000];
+uint64_t dp[1000];
+bool vs[1000];
 
 uint64_t dfs(uint16_t _n) {
 	if(!vs[_n]) {
-		if(ks[_n].empty()) vs[_n] = ns[_n];
+		vs[_n] = true;
+		if(ks[_n].empty()) dp[_n] = ns[_n];
 		else {
 			uint64_t m(0);
 			for(uint32_t _k(0); _k < ks[_n].size(); _k++)
 				m = max(m, dfs(ks[_n][_k]));
-			vs[_n] = m + ns[_n];
+			dp[_n] = m + ns[_n];
 		}
 	}
-	return vs[_n];
+	return dp[_n];
 }
 
 int32_t main(void) {
@@ -37,7 +39,7 @@ int32_t main(void) {
 		}
 		cin >> w;
 		cout << dfs(w - 1) << '\n';
-		memset(vs, 0, sizeof(vs));
+		memset(vs, false, sizeof(bool) * n);
 		for(uint16_t _n(0); _n < n; _n++)
 			ks[_n].clear();
 	}
