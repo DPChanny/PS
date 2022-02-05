@@ -13,40 +13,35 @@ int main(void) {
 	string c;
 	cin >> c;
 
-	for (int _n(0); _n < n; _n++)
+	for(int _n(0); _n < n; _n++)
 		cin >> ns[_n];
-	
-	for (int _i(0); _i < c.size(); _i++)
-	{
-		if (c[_i] == '*') {
+
+	for(int _i(0); _i < c.size(); _i++) {
+		if(c[_i] == '*') {
 			double a(s.top());
 			s.pop();
 			double b(s.top());
 			s.pop();
 			s.push(b * a);
-		}
-		else if (c[_i] == '/') {
+		} else if(c[_i] == '/') {
 			double a(s.top());
 			s.pop();
 			double b(s.top());
 			s.pop();
 			s.push(b / a);
-		}
-		else if (c[_i] == '+') {
+		} else if(c[_i] == '+') {
 			double a(s.top());
 			s.pop();
 			double b(s.top());
 			s.pop();
 			s.push(b + a);
-		}
-		else if (c[_i] == '-') {
+		} else if(c[_i] == '-') {
 			double a(s.top());
 			s.pop();
 			double b(s.top());
 			s.pop();
 			s.push(b - a);
-		}
-		else {
+		} else {
 			s.push(ns[c[_i] - 'A']);
 		}
 	}
