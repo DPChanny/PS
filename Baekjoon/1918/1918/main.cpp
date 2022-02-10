@@ -3,35 +3,33 @@
 
 using namespace std;
 
+string s, r;
+stack<char> so;
+
 int main(void) {
-	stack<char> s;
-	string input, result;
-	cin >> input;
-	for (int i(0); i < input.length(); i++)
-	{
-		if (input[i] == ')') {
-			while (!s.empty() && s.top() != '(') {
-				result += s.top(); s.pop();
+	cin >> s;
+	for(int _s(0); _s < s.size(); _s++) {
+		if(s[_s] == '(') so.push(s[_s]);
+		else if(s[_s] == ')') {
+			while(so.top() != '(') {
+				r += so.top();  so.pop();
 			}
-			s.pop();
+			so.pop();
 		}
-		else if (input[i] == '+' || input[i] == '-') {
-			while (!s.empty() && s.top() != '(') {
-				result += s.top(); s.pop();
+		else if(s[_s] == '+' || s[_s] == '-') {
+			while(!so.empty() && so.top() != '(') {
+				r += so.top();  so.pop();
 			}
-			s.push(input[i]);
-		}
-		else if (input[i] == '*' || input[i] == '/') {
-			while (!s.empty() && (s.top() == '*' || s.top() == '/')) {
-				result += s.top(); s.pop();
+			so.push(s[_s]);
+		} else if(s[_s] == '*' || s[_s] == '/') {
+			while(!so.empty() && so.top() != '(' && (so.top() == '*' || so.top() == '/')) {
+				r += so.top();  so.pop();
 			}
-			s.push(input[i]);
-		} 
-		else if (input[i] == '(') s.push(input[i]);
-		else result += input[i];
-	}   
-	while (!s.empty()) {
-		result += s.top(); s.pop();
+			so.push(s[_s]);
+		} else r += s[_s];
 	}
-	cout << result;
+	while(!so.empty()) {
+		r += so.top();  so.pop();
+	}
+	cout << r;
 }
