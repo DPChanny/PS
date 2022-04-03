@@ -7,7 +7,7 @@ long long int n, k;
 long long int gc(const long long int& _i) {
 	long long int s(0);
 	for (long long int _n(1); _n < n + 1 && _i / _n; _n++)
-		s += min(_i / _n - (_i % _n ? 0 : 1), n);                                                                                                                                                                          -(_i % n ? 0 : 1);
+		s += min(_i / _n - (_i % _n ? 0 : 1), n);
 	return s;
 }
 
