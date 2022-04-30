@@ -11,16 +11,18 @@ int n, m, k, bk, us[1'000 + 1], s;
 E* es;
 bool ks[1'000 + 1];
 
+bool operator<(const E& _a, const E& _b) {
+	return _a.w < _b.w;
+}
+
 int gu(int _n) {
 	if (!us[_n]) return _n;
 	return us[_n] = gu(us[_n]);
 }
 
-bool operator<(const E& _a, const E& _b) {
-	return _a.w < _b.w;
-}
-
 int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr); cout.tie(nullptr);
 	cin >> n >> m >> k;
 	for (int _k(0); _k < k; _k++) {
 		cin >> bk; ks[bk] = true;
