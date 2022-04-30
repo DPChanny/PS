@@ -34,4 +34,5 @@ int main(void) {
 			us[gu(es[_m].na)] = es[_m].nb;
 		}
 	cout << s;
+	delete[] es;
 }
