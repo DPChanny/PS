@@ -1,49 +1,37 @@
 #include<iostream>
-#include<algorithm>
 #include<queue>
 #include<stack>
 
 using namespace std;
 
 typedef long long int lli;
-typedef pair<lli, lli> B;
-#define pt first
-#define pw second
+typedef pair<lli, lli> P;
+#define pf first
+#define ps second
 
-constexpr lli MN = 1'000;
-
-lli n, m, bf, bt, bw, nws[MN], cn, nhs[MN];
-bool nvs[MN];
-vector<B> bs[MN];
-struct c {
-	bool operator()(lli &_a, lli &_b){
-		return nws[_a] > nws[_b];
-	}
-};
-priority_queue<lli, vector<lli>, c> ns;
+lli n, m, bf, bt, bw;
+P cn;
+vector<lli> nws(1'000, INT64_MAX), nhs(1'000, -1);
+vector<P> bs[1'000];
+priority_queue<P> ns;
 
 int main(void) {
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr); cout.tie(nullptr);
 	cin >> n >> m;
-	for (int _m(0); _m < m; _m++) {
+	for (lli _m(0); _m < m; _m++) {
 		cin >> bf >> bt >> bw;
 		bs[bf - 1].push_back({ bt - 1 , bw });
 	}
-	fill(nws, nws + MN, INT64_MAX);
-	fill(nhs, nhs + MN, -1);
 	cin >> bf >> bt;
-	nws[bf - 1] = 0;
-	ns.push(bf - 1);
+	ns.push({ bf - 1, nws[bf - 1] = 0 });
 	while (!ns.empty()) {
 		cn = ns.top(); ns.pop();
-		if (nvs[cn]) continue;
-		nvs[cn] = true;
-		for (lli _b(0); _b < bs[cn].size(); _b++)
-			if (nws[cn] + bs[cn][_b].pw < nws[bs[cn][_b].pt]) {
-				nws[bs[cn][_b].pt] = nws[cn] + bs[cn][_b].pw;
-				nhs[bs[cn][_b].pt] = cn;
-				ns.push(bs[cn][_b].pt);
+		if (nws[cn.pf] < cn.ps) continue;
+		for (lli _b(0); _b < bs[cn.pf].size(); _b++)
+			if (nws[cn.pf] + bs[cn.pf][_b].ps < nws[bs[cn.pf][_b].pf]) {
+				ns.push({ bs[cn.pf][_b].pf, nws[bs[cn.pf][_b].pf] = nws[cn.pf] + bs[cn.pf][_b].ps });
+				nhs[bs[cn.pf][_b].pf] = cn.pf;
 			}
 	}
 	stack<lli> rhs;
