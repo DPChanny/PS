@@ -1,39 +1,43 @@
 #include<iostream>
-#include<deque>
+#include<queue>
 
 using namespace std;
 
 constexpr int MAX = 100001;
 
-int n, k, t, s, cq;
-bool vs[MAX];
+int n, k,
+cp, // current position
+ct, // current time
+ft, // fastest time
+vs[MAX]; // visited status
+bool flag;
 
 int main(void) {
+	for (int _vs(0); _vs < MAX; _vs++)
+		vs[_vs] = 2147483647;
+	ft = 2147483647;
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
 	cin >> n >> k;
-	deque<int> q;
-	q.push_back(n);
+	q.emplace(0, n); // 매개변수 순서 변경
 	while (true) {
-		s = q.size();
-		for (int _s(0); _s < s; _s++) {
-			cq = q.front(); q.pop_front();
-			if (cq == k) {
-				cout << t;
-				exit(EXIT_SUCCESS);
-			}
-			if (cq * 2 < MAX && !vs[cq * 2]) {
-				vs[cq * 2] = true;
-				q.push_front(cq * 2);
-				s++;
-			}
-			if (cq < MAX - 1 && !vs[cq + 1]) {
-				vs[cq + 1] = true;
-				q.push_back(cq + 1);
-			}
-			if (cq > 0 && !vs[cq - 1]) {
-				vs[cq - 1] = true;
-				q.push_back(cq - 1);
-			}
+		cp = q.top().second; // 매개변수 순서 변경
+		ct = q.top().first;  // 매개변수 순서 변경
+		q.pop();
+		if (cp == k) {
+			cout << ct;
+			break;
 		}
-		t++;
+		if (cp * 2 < MAX && ct < vs[cp * 2]) {
+			q.emplace(ct, cp * 2); // 매개변수 순서 변경
+			vs[cp * 2] = ct;
+		}
+		if (cp + 1 < MAX && ct < vs[cp + 1]) {
+			q.emplace(ct + 1, cp + 1); // 매개변수 순서 변경
+			vs[cp + 1] = ct;
+		}
+		if (cp - 1 >= 0 && ct < vs[cp - 1]) {
+			q.emplace(ct + 1, cp - 1); // 매개변수 순서 변경
+			vs[cp - 1] = ct;
+		}
 	}
 }
